@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/common/product';
 import { ActivatedRoute } from '@angular/router';
+import { timeoutWith } from 'rxjs/operators';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -17,11 +20,12 @@ export class ProductListComponent implements OnInit {
   thePageSize: number = 10;
   theTotalElements: number = 0;
   previousKeyword!: string;
+
   constructor(
     private productService: ProductService,
+    private cartService: CartService,
     private route: ActivatedRoute
   ) {}
-
   ngOnInit() {
     this.route.paramMap.subscribe(() => {
       this.listProducts();
@@ -53,6 +57,7 @@ export class ProductListComponent implements OnInit {
       .subscribe((data) => {
         this.products = data._embedded.products;
         this.thePageNumber = data.page.number + 1;
+
         this.thePageSize = data.page.size;
         this.theTotalElements = data.page.totalElements;
       });
@@ -61,7 +66,7 @@ export class ProductListComponent implements OnInit {
     // check if "id" parameter is available
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
     if (hasCategoryId) {
-      // get the "id" param string. convert string to a number using the "+" symbol
+      // get the "id" param string. convert string to a number using the "+"symbol
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
     } else {
       // not category id available ... default to category id 1
@@ -95,5 +100,11 @@ export class ProductListComponent implements OnInit {
     this.thePageSize = pageSize;
     this.thePageNumber = 1;
     this.listProducts();
+  }
+  addToCart(theProduct: Product) {
+    console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
+    
+    const theCartItem = new CartItem(theProduct);
+    this.cartService.addToCart(theCartItem);
   }
 }
