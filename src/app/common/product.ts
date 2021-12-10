@@ -1,14 +1,9 @@
 export class Product {
-    id!: string;
-    sku!: string;
-    name!: string;
-    description!: string;
-    unitPrice!: number;
-    imageUrl!: string;
-    active!: boolean;
-    unitsInStock!: number;
-    dateCreated!: Date;
-    lastUpdate!: Date;
+    masach!: string;
+    ten_khiem!: string;
+    maloai!: number;
+    nxb!: string;
+    gia!: number;
     
 }
 

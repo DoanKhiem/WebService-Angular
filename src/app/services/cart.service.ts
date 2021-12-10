@@ -16,7 +16,7 @@ export class CartService {
     if (this.cartItems.length > 0) {
       // find the item in the cart based on item id
       existingCartItem = this.cartItems.find(
-        (tempCartItem) => tempCartItem.id === theCartItem.id
+        (tempCartItem) => tempCartItem.masach === theCartItem.masach
       )!;
 
       // check if we found it
@@ -36,7 +36,7 @@ export class CartService {
     let totalPriceValue: number = 0;
     let totalQuantityValue: number = 0;
     for (let currentCartItem of this.cartItems) {
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
+      totalPriceValue += currentCartItem.quantity * currentCartItem.gia;
       totalQuantityValue += currentCartItem.quantity;
     }
     // publish the new values ... all subscribers will receive the new data
@@ -48,9 +48,9 @@ export class CartService {
   logCartData(totalPriceValue: number, totalQuantityValue: number) {
     console.log('Contents of the cart');
     for (let tempCartItem of this.cartItems) {
-      const subTotalPrice = tempCartItem.quantity * tempCartItem.unitPrice;
-      console.log(`name: ${tempCartItem.name}, quantity=${tempCartItem.quantity}, 
-      unitPrice=${tempCartItem.unitPrice}, subTotalPrice=${subTotalPrice}`);
+      const subTotalPrice = tempCartItem.quantity * tempCartItem.gia;
+      console.log(`name: ${tempCartItem.ten_khiem}, quantity=${tempCartItem.quantity}, 
+      unitPrice=${tempCartItem.gia}, subTotalPrice=${subTotalPrice}`);
     }
 
     console.log(`totalPrice: ${totalPriceValue.toFixed(2)}, totalQuantity: 
@@ -68,7 +68,7 @@ export class CartService {
   remove(theCartItem: CartItem) {
     // get index of item in the array
     const itemIndex = this.cartItems.findIndex(
-      (tempCartItem) => tempCartItem.id === theCartItem.id
+      (tempCartItem) => tempCartItem.masach === theCartItem.masach
     );
     // if found, remove the item from the array at the given index
     if (itemIndex > -1) {

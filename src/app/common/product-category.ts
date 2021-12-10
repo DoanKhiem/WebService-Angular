@@ -1,5 +1,5 @@
 export class ProductCategory {
-    id!: number;
-    categoryName!: string;
+    ma!: number;
+    ten_khiem!: string;
 
 }
